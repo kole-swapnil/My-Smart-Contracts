@@ -1,5 +1,21 @@
 pragma solidity ^0.6.0;
 
+contract Ownable{
+    address payable owner;
+    
+    constructor()public{
+        owner = msg.sender;
+    }
+    
+    modifier onlyOwner(){
+        require(msg.sender==owner,"You are not owner");
+        _;
+    }
+    
+    function isOwner()public view returns(bool){
+        return(msg.sender == owner);
+    }
+}
 contract Itm{
     uint public priceinwei;
     uint public indexy;
@@ -26,7 +42,7 @@ contract Itm{
 }
 
 
-contract ItemManager{
+contract ItemManager is Ownable{
     
     
     enum Suppchainstate{created, paid, delivered}
@@ -44,7 +60,7 @@ contract ItemManager{
     
     uint public itemindex;
     
-    function CreateItem(string memory _identifier,uint _itemprice) public {
+    function CreateItem(string memory _identifier,uint _itemprice) public onlyOwner{
         Itm item = new Itm(this,_itemprice,itemindex);
         items[itemindex].identify = _identifier;
         items[itemindex]._item = item;
@@ -62,7 +78,7 @@ contract ItemManager{
         emit SupplyChainStep(index,uint(items[index]._state),address(items[index]._item));
     }
     
-    function triggerDelivery(uint index) public{
+    function triggerDelivery(uint index) public onlyOwner{
         require(items[index]._state == Suppchainstate.paid,"Item is further in the supply chain");
         items[index]._state = Suppchainstate.delivered;        
         emit SupplyChainStep(index,uint(items[index]._state),address(items[index]._item));
