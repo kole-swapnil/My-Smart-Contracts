@@ -3,13 +3,23 @@ pragma solidity ^0.6.0;
 contract Itm{
     uint public priceinwei;
     uint public indexy;
+    uint public pricePaid;
     
     ItemManager parentContract;
     constructor(ItemManager _parentContract,uint _priceinwei,uint _indexy)public{
         priceinwei = _priceinwei;
+        parentContract = _parentContract;
+        indexy = _indexy;
     }
     
     receive()external payable{
+        require(pricePaid == 0,"Item is paid already");
+        require(priceinwei == msg.value,"Only full payments allowed");
+        pricePaid += msg.value;
+        (bool success, ) = address(parentContract).call.value(msg.value)(abi.encodeWithSignature("triggerPayment(uint256)",indexy));
+        require(success, "Transaction was unsuccessful");
+    }
+    fallback() external{
         
     }
     
@@ -30,7 +40,7 @@ contract ItemManager{
     }
     
     mapping(uint => S_item) public items;
-    event SupplyChainStep(uint _itemindex,uint _step);
+    event SupplyChainStep(uint _itemindex,uint _step,address _itemAddress);
     
     uint public itemindex;
     
@@ -41,7 +51,7 @@ contract ItemManager{
         items[itemindex].itempri = _itemprice;
         items[itemindex]._state = Suppchainstate.created;
         itemindex++;
-        emit SupplyChainStep(itemindex,uint(items[itemindex]._state));
+        emit SupplyChainStep(itemindex,uint(items[itemindex]._state),address(item));
     }
     
     
@@ -49,12 +59,12 @@ contract ItemManager{
         require(items[index].itempri  == msg.value,"Only full payments accepted");
         require(items[index]._state == Suppchainstate.created,"Item is further in the supply chain");
         items[index]._state = Suppchainstate.paid;
-        emit SupplyChainStep(index,uint(items[index]._state));
+        emit SupplyChainStep(index,uint(items[index]._state),address(items[index]._item));
     }
     
     function triggerDelivery(uint index) public{
         require(items[index]._state == Suppchainstate.paid,"Item is further in the supply chain");
         items[index]._state = Suppchainstate.delivered;        
-        emit SupplyChainStep(index,uint(items[index]._state));
+        emit SupplyChainStep(index,uint(items[index]._state),address(items[index]._item));
     }
 }
