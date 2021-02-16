@@ -10,8 +10,7 @@ contract LandRecord{
     constructor(address _govt)public{
         govtGSTAddr = _govt;
     }
-    
-    
+     
     struct Person{
         uint personId;
         uint perAadharno;
@@ -28,7 +27,6 @@ contract LandRecord{
     mapping(address=>Person) public people;
     mapping(uint=>address) public personIds;
     mapping(uint=>Person) public personaadhars;
-    
     
     struct Plot{
         uint plotId;
@@ -52,14 +50,11 @@ contract LandRecord{
         uint adminaadharno;
         address adminaddr;
         string role;
-        
     }
     
     mapping(address=>Admin) public Admins;
     mapping(uint=>address) public AdminIds;
     mapping(uint=>Admin) public Adminaadhars;
-    
-    
     
     function addPerson(uint _perAadharno,address[] calldata _inheritChildren) public returns(uint) {
         uint x = people[msg.sender].personId;
@@ -147,7 +142,6 @@ contract LandRecord{
         Plots[_plotId] = aux;
     }
     
-    
     function buyLand(uint _plotId)public payable{
         Plot memory aux = Plots[_plotId];
         require(aux.isSelling);
@@ -155,7 +149,6 @@ contract LandRecord{
         aux.newowner = msg.sender;
         Plots[_plotId] = aux;
     }
-    
     
     function consensus(uint _plotId,bool _dec)public{
         Plots[_plotId].consensus.push(_dec);
@@ -172,8 +165,6 @@ contract LandRecord{
                 transfer(_plotId);
             }
         }
-        
-        
     }
     
     function transfer(uint _plotId)public{
@@ -203,6 +194,7 @@ contract LandRecord{
         Plots[_plotId].owneraddr = aux.inheritChildren;
         
     }
+    
     function getowner(uint _plotId)public view returns(address[] memory){
         return Plots[_plotId].owneraddr;
     }
@@ -210,8 +202,4 @@ contract LandRecord{
     function getconsensus(uint _plotId)public view returns(bool[] memory){
         return Plots[_plotId].consensus;
     }
-    
-    
-    
-    
 }
