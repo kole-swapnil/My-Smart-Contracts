@@ -26,17 +26,20 @@
             event tokenputforsale(uint indexed tokenId,address indexed seller,uint sellPrice,bool isListed,uint times);
             event tokenbid(uint indexed tokenId,address indexed stcl,bool isBid,uint close,uint times);
             event bidstarted(uint indexed tokenId,address indexed stcl,uint tokenPrice,uint times);
+            
             struct Panel{
                     uint memcount;
                     address[] allmem;
                     uint panelprice;
                     uint countcritic;
             }
+            
             struct Auction{
                 address payable bidder;
                 uint bidprice;
                 bool isBidding;
             }
+            
             struct ArtToken{
                 uint tokenIdentifier;
                 string tokenHash;
@@ -47,12 +50,12 @@
                 uint tokenSellPrice;
                 string imgurl;
                 string tokenTitle;
-               // uint tier;
                 Panel panel;
                 Auction auction;
                 uint batchId;
                 
             }
+
             mapping(uint => uint)public batches;
             mapping(uint => ArtToken) public Arts;
             mapping(address => ArtToken[]) public tokensByCreator;
@@ -61,6 +64,7 @@
             function setPercentCut(uint _percent) public {
                 percentageCut = _percent;
             }
+
             function setMetaUrl(string memory _url) public {
                 metaUrl = _url;
             }
@@ -78,12 +82,10 @@
                     batches[batchcounter] = _nos;
                     for(uint i=0;i<_nos;i++){
                     create(_tokenHash,_tokenTitle,_tokenPrice,_imgurl,batchcounter);
-                    }
-                        
-                
-          
+                    }            
             }
-           function create(string memory _tokenHash,string memory _tokenTitle,uint _tokenPrice,string memory _imgurl,uint _batchid)public returns(uint){
+
+            function create(string memory _tokenHash,string memory _tokenTitle,uint _tokenPrice,string memory _imgurl,uint _batchid)public returns(uint){
                 tokenCount++;
                 ArtToken memory y;
                 y.tokenIdentifier = tokenCount;
@@ -121,21 +123,18 @@
                     }
                     
                 }
-                
                 require(exists);
-                
                 y.panel.panelprice = ((y.panel.panelprice*y.panel.countcritic) + _criticprice)/y.panel.countcritic++;
                 y.panel.countcritic++;
                 Arts[_tokenId] = y;
-                
             }
             
             function putForSale(uint256 _tokenId,uint _sellprice) public{
                 Arts[_tokenId].isSelling = true;
                 Arts[_tokenId].tokenSellPrice = _sellprice;
                 emit tokenputforsale(_tokenId,msg.sender,_sellprice,true,block.timestamp);
-                
             }
+
             function deSale(uint256 _tokenId) public{
                 Arts[_tokenId].isSelling = false;
                 Arts[_tokenId].tokenSellPrice = 0;
@@ -149,7 +148,6 @@
             function buyToken(uint256 _tokenId) public payable returns(bool){
                 return _buyToken(_tokenId,msg.sender,msg.value);
             }
-            
             
             function _buyToken(uint256 _tokenId,address payable addr,uint256 val) private returns(bool){
                ArtToken memory y = Arts[_tokenId];
@@ -239,7 +237,7 @@
             }
             
             function closeBidOwner(uint _tokenId) public {
-                ArtToken memory y = Arts[_tokenId];
+               ArtToken memory y = Arts[_tokenId];
                 require(y.tokenOwner == msg.sender);
                uint fee;
                uint priceAfterFee;
@@ -315,27 +313,27 @@
             }
             
             function integerToString(uint _i) internal pure returns (string memory) {
-        if (_i == 0) {
-            return "0";
-        }
-        
-        uint j = _i;
-        uint len;
-      
-        while (j != 0) {
-            len++;
-            j /= 10;
-        }
-      
-        bytes memory bstr = new bytes(len);
-        uint k = len - 1;
-      
-        while (_i != 0) {
-            bstr[k--] = byte(uint8(48 + _i % 10));
-            _i /= 10;
-        }
-      return string(bstr);
-    }    
+                if (_i == 0) {
+                    return "0";
+                }
+                
+                uint j = _i;
+                uint len;
+            
+                while (j != 0) {
+                    len++;
+                    j /= 10;
+                }
+            
+                bytes memory bstr = new bytes(len);
+                uint k = len - 1;
+            
+                while (_i != 0) {
+                    bstr[k--] = byte(uint8(48 + _i % 10));
+                    _i /= 10;
+                }
+            return string(bstr);
+            }    
             
             function withdrawBalance() public payable onlyOwner() {
                 (msg.sender).transfer(totalbal);
@@ -345,6 +343,5 @@
                 uint256 balance = address(this).balance;
                 (msg.sender).transfer(balance);
             }
-        
-           
+          
         }
