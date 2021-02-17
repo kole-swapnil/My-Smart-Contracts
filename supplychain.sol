@@ -43,10 +43,7 @@ contract Itm{
 
 
 contract ItemManager is Ownable{
-    
-    
     enum Suppchainstate{created, paid, delivered}
-    
     struct S_item {
         Itm _item;
         string identify;
