@@ -3,10 +3,7 @@ pragma experimental ABIEncoderV2;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/contracts/access/Ownable.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/contracts/utils/Pausable.sol";
 
-
 contract COVID is Ownable,Pausable{
-    
-    
     uint public hospitalcount = 0;
     uint public patientcount = 0;
      enum State { Tested, Active, Recovered , Deceased }
@@ -54,8 +51,8 @@ contract COVID is Ownable,Pausable{
         pat[aadhar].patient_name = name;
         pat[aadhar].report_added = now;
         hosp[hosp_id].own_patients.push(aadhar);
-        
     }
+    
     function updatePatientState(uint hosp_id,uint aadhar,uint state,string memory hash)public onlyRegistered(hosp_id){
         pat[aadhar].report_hash = hash;
         if(state == 0)
@@ -67,9 +64,11 @@ contract COVID is Ownable,Pausable{
         if(state == 3)
         {pat[aadhar].patient_state = State.Deceased;}
     }
+    
     function viewpatient(uint aadhar)public view returns(patient memory){
         return pat[aadhar];
     }
+    
     function viewReport(uint aadhar)public view returns(string memory){
         return pat[aadhar].report_hash;
     }
