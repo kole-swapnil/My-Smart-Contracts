@@ -115,7 +115,6 @@ contract Certificates is Ownable{
         emit stuAdded(studentcnt,_aadhar,_name,_cllg_id,now);
     }
     
-
     function addCertificate(uint _cllg_id,uint _stu_id,uint _studentaadhar,string memory _hash,string memory _name)public{ 
         certificatecnt++;
         certy[certificatecnt].cert_id = certificatecnt;
@@ -128,7 +127,6 @@ contract Certificates is Ownable{
         students[_studentaadhar].certs.push(certificatecnt);
         students[_studentaadhar].certcount++;
         emit certAdded(certificatecnt,_cllg_id,_stu_id,now);
-        
     }
     
     function getClgStu(address _addr) public view returns(uint[] memory){
