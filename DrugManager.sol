@@ -16,7 +16,6 @@ contract Ownable{
     }
 }
 
-
 contract Drug is Ownable{
     uint public priceInWei;
     uint public index;
@@ -30,7 +29,6 @@ contract Drug is Ownable{
         parentContract = _parentContract;
     }
    
-    
     receive() external payable{
         require(pricePaid == 0,"Medicine is paid already");
         require(pricePaid == msg.value,"Medicine full payment required");

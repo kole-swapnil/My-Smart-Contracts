@@ -13,7 +13,9 @@ contract COVID is Ownable,Pausable{
         bool registered;
         uint[] own_patients;
     }
+
     mapping(uint=>hospital) public hosp;
+    
     struct patient{
         uint patient_id;
         address patient_acc;
