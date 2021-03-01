@@ -14,6 +14,7 @@ contract variables{
     function increment()public{
         myuint++;
     }
+    
     function deccrement()public{
         myuint--;
     }
