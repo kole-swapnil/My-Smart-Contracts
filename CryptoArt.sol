@@ -2,10 +2,8 @@
         pragma solidity >=0.6.0; 
         pragma experimental ABIEncoderV2;
         
-        import "https://github.com/kole-swapnil/openzepkole/token/ERC721/ERC721.sol";
-       // import "@openzeppelin/contracts/token/ERC721/ERC721.sol"; 
+        import "https://github.com/kole-swapnil/openzepkole/token/ERC721/ERC721.sol"; 
         import "https://github.com/kole-swapnil/openzepkole/access/Ownable.sol";
-        //import "@openzeppelin/contracts/access/Ownable.sol"; 
         
         
         contract Cryptoart is ERC721,Ownable{
