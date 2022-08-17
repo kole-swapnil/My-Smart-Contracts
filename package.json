@@ -1,0 +1,24 @@
+{
+	"name": "my-smart-contracts",
+	"version": "1.0.0",
+	"description": "Keeping all my smart contracts from remix",
+	"main": "index.js",
+	"scripts": {
+		"prettier": "prettier --write '*.sol'"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sahilrajput03/My-Smart-Contracts.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/sahilrajput03/My-Smart-Contracts/issues"
+	},
+	"homepage": "https://github.com/sahilrajput03/My-Smart-Contracts#readme",
+	"devDependencies": {
+		"prettier": "^2.7.1",
+		"prettier-plugin-solidity": "^1.0.0-beta.24"
+	}
+}
